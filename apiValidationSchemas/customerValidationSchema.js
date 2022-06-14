@@ -19,6 +19,7 @@ module.exports.register = Joi.object({
 module.exports.socialRegistration = Joi.object({
   name: Joi.string().trim().required().min(3),
   email: Joi.string().email().trim().required(),
+  image_url: Joi.string(),
   is_verified: Joi.boolean(),
 });
 

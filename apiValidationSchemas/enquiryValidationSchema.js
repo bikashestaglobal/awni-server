@@ -37,6 +37,8 @@ module.exports.getAllEnquiries = Joi.object({
 
 module.exports.generateReport = Joi.object({
   days: Joi.string(),
+  startDate: Joi.string(),
+  endDate: Joi.string(),
 });
 
 module.exports.updateEnquiry = Joi.object({

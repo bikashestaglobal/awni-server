@@ -72,6 +72,7 @@ module.exports.updateAboutUs = async ({ id, body }) => {
     const query = await helpers.createUpdateQuery("about_us", `id=${id}`, body);
 
     const responseData = await pool.query(query);
+
     const updatedData = responseData.rows;
     if (updatedData.length) {
       return updatedData[0];

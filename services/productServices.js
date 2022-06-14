@@ -67,13 +67,15 @@ module.exports.getAllProducts = async ({
     }
 
     if (parCatSlug == "undefined" && subCatSlug == "undefined") {
-      query = `SELECT * FROM products WHERE status='${status}' AND selling_price <= ${max} AND selling_price >= ${min} ORDER BY created_at DESC LIMIT ${parseInt(
+      query = `SELECT * FROM products WHERE ${
+        status == "all" ? "" : `status = '${status}' AND`
+      }  selling_price <= ${max} AND selling_price >= ${min} ORDER BY created_at DESC LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
 
     if (searchQuery != "null") {
-      query = `SELECT * FROM products WHERE name ILIKE '%${searchQuery}%' OR slug ILIKE '%${searchQuery}%' OR size ILIKE '%${searchQuery}%' OR weight ILIKE '%${searchQuery}%' OR code ILIKE '%${searchQuery}%' ORDER BY created_at DESC`;
+      query = `SELECT * FROM products WHERE name ILIKE '%${searchQuery}%' OR slug ILIKE '%${searchQuery}%' OR size ILIKE '%${searchQuery}%' OR weight ILIKE '%${searchQuery}%' OR code ILIKE '%${searchQuery}%' OR mrp::text ILIKE '%${searchQuery}%' OR selling_price::text ILIKE '%${searchQuery}%' ORDER BY created_at DESC`;
     }
 
     const responseData = await pool.query(query);
@@ -114,7 +116,7 @@ module.exports.getProductById = async ({ id }) => {
 module.exports.getProductBySlug = async ({ slug }) => {
   try {
     // const query = await helpers.createFindQuery("products", { slug });
-    const query = `SELECT products.*, ranges.name as range_name FROM products LEFT JOIN ranges ON ranges.id = products.range_id WHERE slug = '${slug}'`;
+    const query = `SELECT products.*, ranges.name as range_name, categories.catalogue as catalogue FROM products LEFT JOIN ranges ON ranges.id = products.range_id LEFT JOIN categories ON categories.id = products.cat_id WHERE products.slug = '${slug}'`;
 
     const responseData = await pool.query(query);
     const fetchedData = responseData.rows;

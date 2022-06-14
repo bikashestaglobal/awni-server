@@ -34,9 +34,7 @@ module.exports.getAllEnquiries = async ({
   end_date = "null",
 }) => {
   try {
-    let whereCondition = `WHERE status='${
-      status != undefined && status != "undefined" ? status : "PENDING"
-    }'`;
+    let whereCondition = `WHERE 1=1`;
     let orderBy = "ORDER BY created_at DESC";
     let query = ``;
 
@@ -78,18 +76,52 @@ module.exports.getAllEnquiries = async ({
 };
 
 // generateReport Service
-module.exports.generateReport = async ({ days = "30 day" }) => {
+module.exports.generateReport = async ({
+  days = "30",
+  startDate = "null",
+  endDate = "null",
+}) => {
   try {
     let query = `SELECT COUNT(*) as count,
         date_trunc('day', created_at) as day
     FROM enquiries
-    WHERE created_at >= date_trunc('day', NOW()) - INTERVAL '${days}'
+    WHERE created_at >= date_trunc('day', NOW()) - INTERVAL '${
+      days == "null" ? 30 : days
+    } day'
     GROUP BY date_trunc('day', created_at)`;
 
-    // console.log(query);
+    //     let query = `SELECT COUNT(*) as count,
+    //     date_trunc('month', created_at) as day
+    // FROM enquiries
+    // GROUP BY date_trunc('month', created_at)`;
+
+    //     let query = `SELECT COUNT(*) as count, DATE_TRUNC('month',created_at) AS day
+    // FROM enquiries
+    // WHERE created_at BETWEEN '2022-01-01' AND '2022-6-14 23:59:59' GROUP BY DATE_TRUNC('month', created_at)`;
+
+    if (days != "null") {
+      query = `SELECT COUNT(*) as count,
+        date_trunc('day', created_at) as day
+    FROM enquiries
+    WHERE created_at >= date_trunc('day', NOW()) - INTERVAL '${days} day'
+    GROUP BY date_trunc('day', created_at)`;
+    }
+
+    if (startDate != "null" && endDate != "null") {
+      query = `SELECT COUNT(*) as count, DATE_TRUNC('month',created_at) AS day
+FROM enquiries
+WHERE created_at BETWEEN '${startDate}' AND '${endDate} 23:59:59' GROUP BY DATE_TRUNC('month', created_at)`;
+    }
 
     const responseData = await pool.query(query);
     const fetchedData = responseData.rows;
+
+    fetchedData.sort(function (a, b) {
+      var c = new Date(a.day);
+      var d = new Date(b.day);
+      return c - d;
+    });
+
     return fetchedData;
   } catch (error) {
     console.log(

@@ -13,6 +13,7 @@ module.exports.createAboutUs = Joi.object({
   vision_description: Joi.string(),
   mission_bg_image: Joi.string(),
   mission_fe_image: Joi.string(),
+  youtube_video: Joi.string(),
 
   why_title: Joi.string(),
   why_description: Joi.string(),
@@ -30,6 +31,7 @@ module.exports.updateAboutUs = Joi.object({
   about_image_title: Joi.string(),
 
   mission_title: Joi.string(),
+  youtube_video: Joi.string(),
   mission_description: Joi.string(),
   vision_title: Joi.string(),
   vision_description: Joi.string(),
