@@ -54,7 +54,6 @@ module.exports.deleteContactUs = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

@@ -11,6 +11,21 @@ productRoutes.post(
   productControllers.createProduct
 );
 
+// createMultipleProduct Routes
+productRoutes.post(
+  "/byCSV",
+  joiSchemaValidations.validateBody(
+    productValidationSchema.createMultipleProduct
+  ),
+  productControllers.createProduct
+);
+
+// getProductWithColorImages Routes
+productRoutes.get(
+  "/withColorAndImages",
+  productControllers.getProductWithColorImages
+);
+
 // getAllProducts Routes
 productRoutes.get(
   "/",

@@ -81,6 +81,25 @@ module.exports.deleteProductColor = async (req, res) => {
   res.status(response.status).send(response);
 };
 
+// deleteProductColorByProductId Controller
+module.exports.deleteProductColorByProductId = async (req, res) => {
+  const response = { ...constaints.defaultServerResponse };
+  try {
+    const responseFromService =
+      await productColorServices.deleteProductColorByProductId(req.params);
+    response.status = 200;
+    response.message = constaints.productColorMessage.PRODUCT_COLOR_DELETED;
+    response.body = responseFromService;
+  } catch (error) {
+    response.message = error.message;
+    response.errors = { message: error.message };
+    console.log(
+      `Something went Wrong controller : productColorController: deleteProductColorByProductId`
+    );
+  }
+  res.status(response.status).send(response);
+};
+
 // updateProductColor Controller
 module.exports.updateProductColor = async (req, res) => {
   const response = { ...constaints.defaultServerResponse };

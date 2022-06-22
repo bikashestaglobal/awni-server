@@ -27,7 +27,6 @@ module.exports.register = async (serviceData) => {
         name: serviceData.name,
         otp: serviceData.otp,
       });
-      console.log(customerData);
       throw new Error(constants.authMessage.NEED_VERIFICATION);
     }
 
@@ -111,7 +110,6 @@ module.exports.socialRegistration = async (serviceData) => {
 
 // verifyAccount Service
 module.exports.verifyAccount = async ({ email }) => {
-  console.log(email);
   try {
     const query = await helpers.createUpdateQuery(
       "customers",
@@ -119,7 +117,6 @@ module.exports.verifyAccount = async ({ email }) => {
       { is_verified: "true" }
     );
 
-    console.log(query);
     const responseData = await pool.query(query);
     const updatedData = responseData.rows;
     if (updatedData.length) {

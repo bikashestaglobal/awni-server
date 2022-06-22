@@ -9,6 +9,10 @@ module.exports.createCategory = Joi.object({
   cat_id: Joi.number().required(),
 });
 
+module.exports.createMultipleCategory = Joi.object({
+  array: Joi.array().items(Joi.array()),
+});
+
 module.exports.deleteCategory = Joi.object({
   id: Joi.number(),
 });

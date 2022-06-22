@@ -5,10 +5,17 @@ const helpers = require("../helpers");
 // createColor Service
 module.exports.createColor = async (serviceData) => {
   try {
-    const query = await helpers.createInsertQuery("colors", serviceData);
+    let query = "";
+
+    if (Array.isArray(serviceData.name)) {
+      query = await helpers.createMultyInsertQuery("colors", serviceData.name);
+    } else {
+      query = await helpers.createInsertQuery("colors", serviceData);
+    }
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
+
     if (createdData.length) {
       return createdData[0];
     } else {
@@ -27,7 +34,7 @@ module.exports.getAllColors = async ({
   query = "null",
 }) => {
   try {
-    let searchQuery = `SELECT * FROM colors LIMIT ${parseInt(
+    let searchQuery = `SELECT * FROM colors ORDER BY created_at DESC LIMIT ${parseInt(
       limit
     )} OFFSET ${parseInt(skip)}`;
 
@@ -72,7 +79,6 @@ module.exports.deleteColor = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

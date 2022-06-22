@@ -17,6 +17,10 @@ module.exports.createProduct = Joi.object({
   description: Joi.string().required(),
 });
 
+module.exports.createMultipleProduct = Joi.object({
+  array: Joi.array().items(Joi.array()),
+});
+
 module.exports.deleteProduct = Joi.object({
   id: Joi.number(),
 });

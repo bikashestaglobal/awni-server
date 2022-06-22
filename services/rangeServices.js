@@ -5,7 +5,13 @@ const helpers = require("../helpers");
 // createRange Service
 module.exports.createRange = async (serviceData) => {
   try {
-    const query = await helpers.createInsertQuery("ranges", serviceData);
+    let query = "";
+
+    if (Array.isArray(serviceData.name)) {
+      query = await helpers.createMultyInsertQuery("ranges", serviceData.name);
+    } else {
+      query = await helpers.createInsertQuery("ranges", serviceData);
+    }
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
@@ -72,7 +78,6 @@ module.exports.deleteRange = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

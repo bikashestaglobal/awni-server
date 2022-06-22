@@ -31,6 +31,15 @@ categoryRoutes.get(
   productColorControllers.getProductColorById
 );
 
+// deleteProductColorByProductId Routes
+categoryRoutes.delete(
+  "/deleteByProductId/:product_id",
+  joiSchemaValidations.validateParams(
+    productColorValidationSchemas.deleteProductColorByProductId
+  ),
+  productColorControllers.deleteProductColorByProductId
+);
+
 // deleteProductColor Routes
 categoryRoutes.delete(
   "/:id",

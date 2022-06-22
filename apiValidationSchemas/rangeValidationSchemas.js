@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 module.exports.createRange = Joi.object({
-  name: Joi.string().trim(),
+  name: [Joi.string().trim(), Joi.array()],
 });
 
 module.exports.deleteRange = Joi.object({

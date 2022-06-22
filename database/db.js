@@ -18,8 +18,8 @@ const awsDB = {
 };
 
 const pool = new Pool(awsDB);
-pool.connect((err, client) => {
-  if (err) {
+pool.connect((error, client) => {
+  if (error) {
     console.log("Oops error occured while connecting the database", error);
   } else {
     console.log("Database connected successfully");

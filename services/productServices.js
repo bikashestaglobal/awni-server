@@ -4,8 +4,19 @@ const helpers = require("../helpers");
 // createProduct Service
 module.exports.createProduct = async (serviceData) => {
   try {
-    console.log(serviceData);
-    const query = await helpers.createInsertQuery("products", serviceData);
+    // const query = await helpers.createInsertQuery("products", serviceData);
+
+    let query = "";
+    if (serviceData.array) {
+      if (Array.isArray(serviceData.array)) {
+        query = await helpers.createMultyInsertQuery(
+          "products",
+          serviceData.array
+        );
+      }
+    } else {
+      query = await helpers.createInsertQuery("products", serviceData);
+    }
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
@@ -80,7 +91,6 @@ module.exports.getAllProducts = async ({
 
     const responseData = await pool.query(query);
     const fetchedData = responseData.rows;
-    // console.log(fetchedData);
     return fetchedData;
   } catch (error) {
     console.log(
@@ -112,7 +122,7 @@ module.exports.getProductById = async ({ id }) => {
   }
 };
 
-// getProductById Service
+// getProductBySlug Service
 module.exports.getProductBySlug = async ({ slug }) => {
   try {
     // const query = await helpers.createFindQuery("products", { slug });
@@ -163,6 +173,55 @@ module.exports.getProductBySlug = async ({ slug }) => {
   }
 };
 
+// getProductBySlug Service
+module.exports.getProductWithColorImages = async ({ slug }) => {
+  try {
+    // const query = await helpers.createFindQuery("products", { slug });
+    const query = `SELECT * from products`;
+
+    const responseData = await pool.query(query);
+    const fetchedData = responseData.rows;
+
+    if (fetchedData.length) {
+      const product = fetchedData;
+      for (let i = 0; i < product.length; i++) {
+        // Remove unwanted column
+        delete product[i].color_id;
+        delete product[i].material;
+
+        // get all product images
+        const queryForImage = `SELECT url FROM product_images WHERE product_id= ${product[i].id}`;
+        const responseImageData = await pool.query(queryForImage);
+        const imageArray = responseImageData.rows.map((item) => {
+          return item.url;
+        });
+        product[i].images = imageArray.join("_") || "";
+
+        // get all product Colors
+        // const queryForColors = await helpers.createFindQuery("product_colors", {
+        //   product_id: product.id,
+        // });
+        const queryForColors = `SELECT color_id FROM product_colors WHERE product_id= ${product[i].id}`;
+
+        const responseColorData = await pool.query(queryForColors);
+        const colorsArray = responseColorData.rows.map((item) => {
+          return item.color_id;
+        });
+        product[i].color_ids = colorsArray.join("_") || "";
+      }
+
+      return product;
+    } else {
+      throw new Error(constants.productMessage.PRODUCT_NOT_FOUND);
+    }
+  } catch (error) {
+    console.log(
+      `Something went Wrong services : productServices: getProductWithColorImages`
+    );
+    throw new Error(error.message);
+  }
+};
+
 // deleteProduct Service
 module.exports.deleteProduct = async ({ id }) => {
   try {
@@ -170,7 +229,6 @@ module.exports.deleteProduct = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

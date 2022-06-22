@@ -9,6 +9,10 @@ module.exports.deleteProductImage = Joi.object({
   id: Joi.number(),
 });
 
+module.exports.deleteProductImageByProductId = Joi.object({
+  product_id: Joi.number(),
+});
+
 module.exports.getProductImageById = Joi.object({
   id: Joi.number(),
 });

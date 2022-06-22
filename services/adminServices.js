@@ -45,7 +45,6 @@ module.exports.adminLogin = async (serviceData) => {
 
     const responseData = await pool.query(chceckQuery);
     const fetchedData = responseData.rows;
-    console.log(fetchedData);
 
     if (fetchedData.length) {
       // Check password is matched or not

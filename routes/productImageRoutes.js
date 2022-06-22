@@ -31,6 +31,15 @@ categoryRoutes.get(
   productImageControllers.getProductImageById
 );
 
+// deleteProductImageByProductId Routes
+categoryRoutes.delete(
+  "/deleteByProductId/:product_id",
+  joiSchemaValidations.validateParams(
+    productImageValidationSchema.deleteProductImageByProductId
+  ),
+  productImageControllers.deleteProductImageByProductId
+);
+
 // deleteProductImage Routes
 categoryRoutes.delete(
   "/:id",

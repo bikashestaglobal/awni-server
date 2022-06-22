@@ -4,11 +4,22 @@ const helpers = require("../helpers");
 // createCategory Service
 module.exports.createCategory = async (serviceData) => {
   try {
-    const query = `INSERT INTO par_categories(${Object.keys(
-      serviceData
-    )}) VALUES(${Object.values(serviceData).map(
-      (item) => `'${item}'`
-    )}) RETURNING *`;
+    let query = "";
+    if (serviceData.array) {
+      if (Array.isArray(serviceData.array)) {
+        query = await helpers.createMultyInsertQuery(
+          "par_categories",
+          serviceData.array
+        );
+      }
+    } else {
+      query = await helpers.createInsertQuery("par_categories", serviceData);
+    }
+    // let query = `INSERT INTO par_categories(${Object.keys(
+    //   serviceData
+    // )}) VALUES(${Object.values(serviceData).map(
+    //   (item) => `'${item}'`
+    // )}) RETURNING *`;
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
@@ -32,7 +43,7 @@ module.exports.getAllCategories = async ({
   query = "null",
 }) => {
   try {
-    let searchQuery = `SELECT * FROM par_categories LIMIT ${parseInt(
+    let searchQuery = `SELECT * FROM par_categories ORDER BY created_at DESC LIMIT ${parseInt(
       limit
     )} OFFSET ${parseInt(skip)}`;
 
@@ -192,7 +203,6 @@ module.exports.deleteCategory = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

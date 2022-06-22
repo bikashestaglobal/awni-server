@@ -4,7 +4,19 @@ const helpers = require("../helpers");
 // createCategory Service
 module.exports.createCategory = async (serviceData) => {
   try {
-    const query = await helpers.createInsertQuery("categories", serviceData);
+    // let query = await helpers.createInsertQuery("categories", serviceData);
+
+    let query = "";
+    if (serviceData.array) {
+      if (Array.isArray(serviceData.array)) {
+        query = await helpers.createMultyInsertQuery(
+          "categories",
+          serviceData.array
+        );
+      }
+    } else {
+      query = await helpers.createInsertQuery("categories", serviceData);
+    }
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
@@ -32,7 +44,7 @@ module.exports.getAllCategories = async ({
   query: searchQuery = "null",
 }) => {
   try {
-    let query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id LIMIT ${parseInt(
+    let query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id ORDER BY created_at DESC LIMIT ${parseInt(
       limit
     )} OFFSET ${parseInt(skip)}`;
 
@@ -164,7 +176,8 @@ module.exports.deleteCategory = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
+
+    
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

@@ -78,6 +78,26 @@ module.exports.getProductBySlug = async (req, res) => {
   res.status(response.status).send(response);
 };
 
+// getProductWithColorImages Controller
+module.exports.getProductWithColorImages = async (req, res) => {
+  const response = { ...constaints.defaultServerResponse };
+  try {
+    const responseFromService = await productServices.getProductWithColorImages(
+      req.params
+    );
+    response.status = 200;
+    response.message = constaints.productMessage.PRODUCT_FETCHED;
+    response.body = responseFromService;
+  } catch (error) {
+    response.message = error.message;
+    response.errors = { message: error.message };
+    console.log(
+      `Something went Wrong controller : productController: getProductWithColorImages`
+    );
+  }
+  res.status(response.status).send(response);
+};
+
 // deleteProduct Controller
 module.exports.deleteProduct = async (req, res) => {
   const response = { ...constaints.defaultServerResponse };

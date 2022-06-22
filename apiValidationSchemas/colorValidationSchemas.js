@@ -1,7 +1,7 @@
 const Joi = require("joi");
 
 module.exports.createColor = Joi.object({
-  name: Joi.string().trim(),
+  name: [Joi.string(), Joi.array()],
 });
 
 module.exports.deleteColor = Joi.object({

@@ -9,6 +9,10 @@ module.exports.deleteProductColor = Joi.object({
   id: Joi.number(),
 });
 
+module.exports.deleteProductColorByProductId = Joi.object({
+  product_id: Joi.number(),
+});
+
 module.exports.getProductColorById = Joi.object({
   id: Joi.number(),
 });

@@ -5,10 +5,17 @@ const helpers = require("../helpers");
 // createCategory Service
 module.exports.createCategory = async (serviceData) => {
   try {
-    const query = await helpers.createInsertQuery(
-      "child_categories",
-      serviceData
-    );
+    let query = "";
+    if (serviceData.array) {
+      if (Array.isArray(serviceData.array)) {
+        query = await helpers.createMultyInsertQuery(
+          "child_categories",
+          serviceData.array
+        );
+      }
+    } else {
+      query = await helpers.createInsertQuery("child_categories", serviceData);
+    }
 
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
@@ -36,7 +43,7 @@ module.exports.getAllCategories = async ({
   query: searchQuery = "null",
 }) => {
   try {
-    let query = `SELECT child_categories.id, child_categories.catalogue, child_categories.created_at, child_categories.status, child_categories.name, child_categories.image, child_categories.slug, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug,  categories.id as cat_id, categories.name as cat_name, categories.slug as cat_slug FROM child_categories INNER JOIN par_categories ON par_categories.id = child_categories.par_cat_id INNER JOIN categories ON categories.id = child_categories.cat_id LIMIT ${parseInt(
+    let query = `SELECT child_categories.id, child_categories.catalogue, child_categories.created_at, child_categories.status, child_categories.name, child_categories.image, child_categories.slug, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug,  categories.id as cat_id, categories.name as cat_name, categories.slug as cat_slug FROM child_categories INNER JOIN par_categories ON par_categories.id = child_categories.par_cat_id INNER JOIN categories ON categories.id = child_categories.cat_id ORDER BY created_at DESC LIMIT ${parseInt(
       limit
     )} OFFSET ${parseInt(skip)}`;
 
@@ -161,7 +168,7 @@ module.exports.deleteCategory = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
+
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

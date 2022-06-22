@@ -6,6 +6,10 @@ module.exports.createCategory = Joi.object({
   image: Joi.string().trim().required(),
 });
 
+module.exports.createMultipleCategory = Joi.object({
+  array: Joi.array().items(Joi.array()),
+});
+
 module.exports.deleteCategory = Joi.object({
   id: Joi.number(),
 });

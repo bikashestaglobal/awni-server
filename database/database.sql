@@ -65,7 +65,7 @@ CREATE TABLE admins (
 -- Range
 CREATE TABLE IF NOT EXISTS ranges(
    id BIGSERIAL PRIMARY KEY,
-   name VARCHAR(2000),
+   name VARCHAR(2000) UNIQUE,
    created_at TIMESTAMP DEFAULT NOW()
 );
 

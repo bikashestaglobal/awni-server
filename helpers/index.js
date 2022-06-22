@@ -44,6 +44,34 @@ module.exports.createInsertQuery = async (tableName, body) => {
   };
 };
 
+// createInsertQuery
+module.exports.createMultyInsertQuery = async (tableName, body) => {
+  let columns = body[0].map((item) => {
+    return `${item}`;
+  });
+
+  let arrayValue = [...body.slice(1)];
+
+  let values = ``;
+
+  arrayValue.map((item) => {
+    if (item[0]) {
+      values = values + "('" + item.join("','") + "'),";
+    }
+  });
+
+  // arrayValue.map((item) => {
+  //   if (item[0]) {
+  //     values = values + `(${item}),`;
+  //   }
+  // });
+
+  return `insert into ${tableName}(${columns}) VALUES ${values.slice(
+    0,
+    values.length - 1
+  )} RETURNING *`;
+};
+
 // createFindQuery
 module.exports.createFindQuery = async (tableName, body, limit = 10) => {
   let keys = Object.keys(body);
@@ -60,7 +88,13 @@ module.exports.createFindQuery = async (tableName, body, limit = 10) => {
   });
   let queryText = "SELECT * FROM " + tableName;
   return {
-    text: queryText + " WHERE " + where + " LIMIT " + limit,
+    text:
+      queryText +
+      " WHERE " +
+      where +
+      " ORDER BY created_at DESC" +
+      " LIMIT " +
+      limit,
     values: values,
   };
 };

@@ -62,8 +62,6 @@ module.exports.getAllEnquiries = async ({
       query = `SELECT * FROM enquiries WHERE name ILIKE '%${searchQuery}%' OR mobile ILIKE '%${searchQuery}%' OR email ILIKE '%${searchQuery}%' OR city ILIKE '%${searchQuery}%' OR message ILIKE '%${searchQuery}%' ORDER BY created_at DESC`;
     }
 
-    // console.log(query);
-
     const responseData = await pool.query(query);
     const fetchedData = responseData.rows;
     return fetchedData;

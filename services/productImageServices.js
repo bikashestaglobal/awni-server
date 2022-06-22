@@ -19,8 +19,6 @@ module.exports.createProductImage = async (serviceData) => {
       values.length - 1
     )} RETURNING *`;
 
-    console.log(serviceData, values, query);
-
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
     if (createdData.length) {
@@ -95,7 +93,7 @@ module.exports.deleteProductImage = async ({ id }) => {
 
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
-    console.log(deleteddData);
+
     if (deleteddData.length) {
       return deleteddData[0];
     } else {
@@ -104,6 +102,26 @@ module.exports.deleteProductImage = async ({ id }) => {
   } catch (error) {
     console.log(
       `Something went Wrong services : productImageServices: deleteProductImage`
+    );
+    throw new Error(error.message);
+  }
+};
+
+// deleteProductImageByProductId Service
+module.exports.deleteProductImageByProductId = async ({ product_id }) => {
+  try {
+    const query = `DELETE FROM product_images WHERE product_id = ${product_id} RETURNING *`;
+    const responseData = await pool.query(query);
+    const deletedData = responseData.rows;
+
+    if (deletedData.length) {
+      return deletedData;
+    } else {
+      throw new Error(constants.productImageMessage.PRODUCT_IMG_NOT_DELETED);
+    }
+  } catch (error) {
+    console.log(
+      `Something went Wrong services : productImageServices: deleteProductImageByProductId, ${error}`
     );
     throw new Error(error.message);
   }

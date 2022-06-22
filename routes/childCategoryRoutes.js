@@ -13,6 +13,15 @@ categoryRoutes.post(
   childCategoryControllers.createCategory
 );
 
+// createMultipleCategory Routes
+categoryRoutes.post(
+  "/byCSV",
+  joiSchemaValidations.validateBody(
+    childCategoryValidationSchemas.createMultipleCategory
+  ),
+  childCategoryControllers.createCategory
+);
+
 // getAllCategories Routes
 categoryRoutes.get(
   "/",
