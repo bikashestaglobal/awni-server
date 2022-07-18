@@ -83,7 +83,7 @@ module.exports.getAllCategories = async ({
     let catWithProducts = [];
     if (fetchedData.length) {
       for (let i = 0; i < fetchedData.length; i++) {
-        const productQuery = `SELECT * FROM products WHERE child_cat_id = ${fetchedData[i].id}`;
+        const productQuery = `SELECT * FROM products WHERE status = true AND child_cat_id = ${fetchedData[i].id}`;
         const productResponseData = await pool.query(productQuery);
         const productData = productResponseData.rows;
         catWithProducts.push({ ...fetchedData[i], products: productData });
