@@ -3,10 +3,12 @@ const categoryRoutes = express.Router();
 const productImageControllers = require("../controllers/productImageControllers");
 const productImageValidationSchema = require("../apiValidationSchemas/productImageValidationSchema");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createProductImage Routes
 categoryRoutes.post(
   "/",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     productImageValidationSchema.createProductImage
   ),

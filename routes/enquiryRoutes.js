@@ -3,6 +3,7 @@ const enquiryRoutes = express.Router();
 const enquiryControllers = require("../controllers/enquiryControllers");
 const enquiryValidationSchema = require("../apiValidationSchemas/enquiryValidationSchema");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createEnquiry Routes
 enquiryRoutes.post(
@@ -21,6 +22,7 @@ enquiryRoutes.get(
 enquiryRoutes.get(
   "/generateReport",
   joiSchemaValidations.validateQuery(enquiryValidationSchema.generateReport),
+  validateAdminToken,
   enquiryControllers.generateReport
 );
 
@@ -28,6 +30,7 @@ enquiryRoutes.get(
 enquiryRoutes.get(
   "/:id",
   joiSchemaValidations.validateParams(enquiryValidationSchema.getEnquiryById),
+  validateAdminToken,
   enquiryControllers.getEnquiryById
 );
 
@@ -35,12 +38,14 @@ enquiryRoutes.get(
 enquiryRoutes.delete(
   "/:id",
   joiSchemaValidations.validateParams(enquiryValidationSchema.deleteEnquiry),
+  validateAdminToken,
   enquiryControllers.deleteEnquiry
 );
 
 // updateEnquiry Routes
 enquiryRoutes.put(
   "/:id",
+  validateAdminToken,
   joiSchemaValidations.validateBody(enquiryValidationSchema.updateEnquiry),
   enquiryControllers.updateEnquiry
 );

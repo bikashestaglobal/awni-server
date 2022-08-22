@@ -70,7 +70,7 @@ customerRouter.put(
 // updateCustomer Routes
 customerRouter.put(
   "/:id",
-  // validateCustomerToken,
+  validateAdminToken,
   joiSchemaValidation.validateBody(customerValidationSchema.updateCustomer),
   customerControllers.updateCustomer
 );

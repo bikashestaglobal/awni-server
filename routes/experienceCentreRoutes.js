@@ -3,10 +3,12 @@ const exprerienceCentreRoutes = express.Router();
 const experienceCentreControllers = require("../controllers/experienceCentreControllers");
 const experienceCentreValidationSchema = require("../apiValidationSchemas/experienceCentreValidationSchema");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createExperienceCentre Routes
 exprerienceCentreRoutes.post(
   "/",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     experienceCentreValidationSchema.createExperienceCentre
   ),
@@ -37,12 +39,14 @@ exprerienceCentreRoutes.delete(
   joiSchemaValidations.validateParams(
     experienceCentreValidationSchema.deleteExperienceCentre
   ),
+  validateAdminToken,
   experienceCentreControllers.deleteExperienceCentre
 );
 
 // updateExperienceCentre Routes
 exprerienceCentreRoutes.put(
   "/:id",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     experienceCentreValidationSchema.updateExperienceCentre
   ),

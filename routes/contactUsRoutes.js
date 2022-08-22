@@ -3,10 +3,12 @@ const categoryRoutes = express.Router();
 const contactUsController = require("../controllers/contactUsController");
 const contactUsValidationSchema = require("../apiValidationSchemas/contactUsValidationSchema");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createContactUs Routes
 categoryRoutes.post(
   "/",
+  validateAdminToken,
   joiSchemaValidations.validateBody(contactUsValidationSchema.createContactUs),
   contactUsController.createContactUs
 );
@@ -20,12 +22,14 @@ categoryRoutes.delete(
   joiSchemaValidations.validateParams(
     contactUsValidationSchema.deleteContactUs
   ),
+  validateAdminToken,
   contactUsController.deleteContactUs
 );
 
 // updateContactUs Routes
 categoryRoutes.put(
   "/:id",
+  validateAdminToken,
   joiSchemaValidations.validateBody(contactUsValidationSchema.updateContactUs),
   contactUsController.updateContactUs
 );

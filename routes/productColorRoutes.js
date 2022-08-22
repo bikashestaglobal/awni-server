@@ -3,10 +3,12 @@ const categoryRoutes = express.Router();
 const productColorControllers = require("../controllers/productColorControllers");
 const productColorValidationSchemas = require("../apiValidationSchemas/productColorValidationSchemas");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createProductColor Routes
 categoryRoutes.post(
   "/",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     productColorValidationSchemas.createProductColor
   ),
@@ -37,6 +39,7 @@ categoryRoutes.delete(
   joiSchemaValidations.validateParams(
     productColorValidationSchemas.deleteProductColorByProductId
   ),
+  validateAdminToken,
   productColorControllers.deleteProductColorByProductId
 );
 
@@ -46,12 +49,14 @@ categoryRoutes.delete(
   joiSchemaValidations.validateParams(
     productColorValidationSchemas.deleteProductColor
   ),
+  validateAdminToken,
   productColorControllers.deleteProductColor
 );
 
 // updateProductColor Routes
 categoryRoutes.put(
   "/:id",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     productColorValidationSchemas.updateProductColor
   ),

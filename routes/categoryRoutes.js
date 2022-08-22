@@ -3,10 +3,12 @@ const categoryRoutes = express.Router();
 const categoryControllers = require("../controllers/categoryControllers");
 const categoryValidationSchemas = require("../apiValidationSchemas/categoryValidationSchemas");
 const joiSchemaValidations = require("../middlewares/joiSchemaValidations");
+const { validateAdminToken } = require("../middlewares/jwtValidation");
 
 // createCategory Routes
 categoryRoutes.post(
   "/",
+  validateAdminToken,
   joiSchemaValidations.validateBody(categoryValidationSchemas.createCategory),
   categoryControllers.createCategory
 );
@@ -14,6 +16,7 @@ categoryRoutes.post(
 // createMultipleCategory Routes
 categoryRoutes.post(
   "/byCSV",
+  validateAdminToken,
   joiSchemaValidations.validateBody(
     categoryValidationSchemas.createMultipleCategory
   ),
@@ -42,12 +45,14 @@ categoryRoutes.get(
 categoryRoutes.delete(
   "/:id",
   joiSchemaValidations.validateParams(categoryValidationSchemas.deleteCategory),
+  validateAdminToken,
   categoryControllers.deleteCategory
 );
 
 // updateCategory Routes
 categoryRoutes.put(
   "/:id",
+  validateAdminToken,
   joiSchemaValidations.validateBody(categoryValidationSchemas.updateCategory),
   categoryControllers.updateCategory
 );
