@@ -106,11 +106,11 @@ module.exports.sendOTPEmail = async ({ emailTo, subject, name, otp }) => {
     const transporter = nodemailer.createTransport({
       service: process.env.EMAIL_SERVICE,
       host: process.env.HOST,
-      port: 587,
-      secure: false, // true for 465, false for other ports
+      port: 465,
+      secure: true, // true for 465, false for other ports
       auth: {
         user: "codescroller@gmail.com", // generated ethereal user
-        pass: "Code84$$$", // generated ethereal password
+        pass: "uxmdqxciskkgxrcc", // generated ethereal password
       },
     });
 
@@ -139,10 +139,10 @@ module.exports.sendOTPEmail = async ({ emailTo, subject, name, otp }) => {
       </div>
     </div>`, // html body
     });
+
     return info.messageId;
   } catch (error) {
-    console.log(error);
-    throw new Error(error.message);
+    throw new Error("Something Went Wrong while sending the Email");
   }
 };
 

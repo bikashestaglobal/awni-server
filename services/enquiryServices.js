@@ -112,6 +112,7 @@ WHERE created_at BETWEEN '${startDate}' AND '${endDate} 23:59:59' GROUP BY DATE_
     }
 
     const responseData = await pool.query(query);
+
     const fetchedData = responseData.rows;
 
     fetchedData.sort(function (a, b) {

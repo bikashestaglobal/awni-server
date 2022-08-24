@@ -27,4 +27,18 @@ adminRoutes.put(
   adminControllers.updateAdmin
 );
 
+// findAccount Routes
+adminRoutes.post(
+  "/findAccount",
+  joiSchemaValidations.validateBody(adminValidationSchema.findAccount),
+  adminControllers.findAccount
+);
+
+// createPassword Routes
+adminRoutes.put(
+  "/createPassword",
+  joiSchemaValidations.validateBody(adminValidationSchema.createPassword),
+  adminControllers.createPassword
+);
+
 module.exports = adminRoutes;

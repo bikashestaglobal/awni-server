@@ -97,3 +97,70 @@ module.exports.updateAdmin = async ({ id, body }) => {
     throw new Error(error);
   }
 };
+
+// createPassword Service
+module.exports.createPassword = async ({ email, body }) => {
+  try {
+    // If Password available
+    if (
+      body.password &&
+      body.password != "null" &&
+      body.password != "undefined"
+    ) {
+      // Hash Password
+      body.password = await bcryptjs.hash(body.password, 12);
+    }
+
+    // Delete Email
+    delete body.email;
+
+    const query = await helpers.createUpdateQuery(
+      "admins",
+      `email='${email}'`,
+      body
+    );
+
+    const responseData = await pool.query(query);
+    const updatedData = responseData.rows;
+    if (updatedData.length) {
+      return updatedData[0];
+    } else {
+      throw new Error(constants.adminMessage.ADMIN_PASSWORD_NOT_CREATED);
+    }
+  } catch (error) {
+    console.log(
+      `Something went Wrong services : adminServices: createPassword`,
+      error
+    );
+    throw new Error(error);
+  }
+};
+
+// findAccount Service
+module.exports.findAccount = async (serviceData) => {
+  try {
+    // Find Account
+    const chceckQuery = await helpers.createFindQuery("admins", {
+      email: serviceData.email,
+    });
+
+    const responseData = await pool.query(chceckQuery);
+    const fetchedData = responseData.rows;
+
+    if (fetchedData.length) {
+      const emailResponse = await helpers.sendOTPEmail({
+        emailTo: serviceData.email,
+        subject: "OTP Verification",
+        name: fetchedData[0].name,
+        otp: serviceData.otp,
+      });
+
+      return fetchedData[0];
+    } else {
+      throw new Error(constants.adminMessage.ADMIN_NOT_FOUND);
+    }
+  } catch (error) {
+    console.log(`Something went wrong Service: adminServices: findAccount`);
+    throw new Error(error.message);
+  }
+};

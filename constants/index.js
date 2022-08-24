@@ -212,6 +212,8 @@ module.exports = {
   },
   adminMessage: {
     ADMIN_CREATED: "Admin Created Successfully!",
+    ADMIN_PASSWORD_CREATED: "Password Created Successfully!",
+    ADMIN_PASSWORD_NOT_CREATED: "Password Not Ctrated!",
     LOGIN_SUCCESS: "Successfully Logedin!",
     ADMIN_NOT_CREATED: "Admin not Created!",
     ADMIN_EXIST: "Admin Exists with this Email!",

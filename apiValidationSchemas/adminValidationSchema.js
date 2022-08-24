@@ -18,3 +18,12 @@ module.exports.updateAdmin = Joi.object({
   email: Joi.string().trim().email(),
   password: Joi.string(),
 });
+
+module.exports.findAccount = Joi.object({
+  email: Joi.string().trim().email().required(),
+});
+
+module.exports.createPassword = Joi.object({
+  email: Joi.string().trim().email().required(),
+  password: Joi.string().required(),
+});
