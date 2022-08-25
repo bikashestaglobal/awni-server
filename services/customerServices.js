@@ -21,7 +21,7 @@ module.exports.register = async (serviceData) => {
     // If data exists and not verified
     if (customerData[0] && !customerData[0].is_verified) {
       // Send Email
-      helpers.sendOTPEmail({
+      const smsResponse = await helpers.sendOTPEmail({
         emailTo: serviceData.email,
         subject: "OTP Verification",
         name: serviceData.name,
@@ -36,7 +36,7 @@ module.exports.register = async (serviceData) => {
     }
 
     // Send Email
-    helpers.sendOTPEmail({
+    const sRse = await helpers.sendOTPEmail({
       emailTo: serviceData.email,
       subject: "OTP Verification",
       name: serviceData.name,
@@ -155,7 +155,7 @@ module.exports.login = async (serviceData) => {
       // Check account is verified or not
       if (!fetchedData[0].is_verified) {
         // Send Email
-        helpers.sendOTPEmail({
+        const smsResponse = await helpers.sendOTPEmail({
           emailTo: serviceData.email,
           subject: "OTP Verification",
           name: serviceData.name,
@@ -415,7 +415,7 @@ module.exports.createNewPassword = async ({ id, password }) => {
 // resendOTP Service
 module.exports.resendOTP = async ({ email, otp, name }) => {
   try {
-    helpers.sendOTPEmail({
+    const smsResponse = await helpers.sendOTPEmail({
       emailTo: email,
       subject: "OTP Verification",
       name: name || "Dear",
