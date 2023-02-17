@@ -37,12 +37,11 @@ app.use("/api/v1/homepageBanners", require("./routes/homepageBannerRoutes"));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  return `Server is running at port ${PORT}`;
+  console.log(`Server is running at port ${PORT}`);
 });
 
 // error handling middleware
 app.use(function (err, req, res, next) {
-  console.error(err.stack);
   res.status(500).send({
     status: 500,
     message: err.message,

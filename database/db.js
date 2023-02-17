@@ -10,8 +10,8 @@ const localDB = {
 
 // Aws database
 const awsDB = {
-  user: "awni",
-  host: "awni-database-instance.cf2qpmbf36be.us-west-2.rds.amazonaws.com",
+  user: "postgres",
+  host: "awni-db.cf2qpmbf36be.us-west-2.rds.amazonaws.com",
   database: "awni",
   password: "asdf1234",
   port: 5432,

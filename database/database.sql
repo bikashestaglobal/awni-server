@@ -1,4 +1,5 @@
 -- Create Database
+DROP DATABASE IF EXISTS awni;
 CREATE DATABASE awni;
 
 -- Drop Table 
@@ -6,12 +7,12 @@ CREATE DATABASE awni;
 
 -- Create Parent Categoey Table
 CREATE TABLE IF NOT EXISTS  par_categories(
-    id BIGSERIAL PRIMARY KEY,
+   id BIGSERIAL PRIMARY KEY,
 	name VARCHAR ( 250 ) UNIQUE NOT NULL,
 	slug VARCHAR ( 250 ) UNIQUE NOT NULL,
 	image VARCHAR ( 1000 ),
 	created_at TIMESTAMP DEFAULT NOW(),
-    status BOOLEAN DEFAULT true
+   status BOOLEAN DEFAULT true
 );
 
 -- Drop Table 
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS  par_categories(
 -- Create Category Table
 CREATE TABLE IF NOT EXISTS categories(
    id BIGSERIAL PRIMARY KEY,
-   par_cat_id integer REFERENCES par_categories (id) ON DELETE CASCADE,
+   par_cat_id INTEGER REFERENCES par_categories (id) ON DELETE CASCADE,
    name VARCHAR(255) NOT NULL,
    slug VARCHAR ( 250 ) UNIQUE NOT NULL,
    image VARCHAR ( 1000 ),
@@ -49,14 +50,14 @@ CREATE TABLE IF NOT EXISTS child_categories(
 -- DROP TABLE IF EXISTS admins CASCADE;
 
 -- Create Admin Table
-CREATE TABLE admins (
-    id BIGSERIAL PRIMARY KEY,
-    name VARCHAR(250) NOT NULL,
-    mobile VARCHAR(12),
-    email VARCHAR(250) UNIQUE NOT NULL,
-    passWord VARCHAR(255),
-    created_at TIMESTAMP DEFAULT NOW(),
-    status BOOLEAN DEFAULT true
+CREATE TABLE IF NOT EXISTS admins (
+   id BIGSERIAL PRIMARY KEY,
+   name VARCHAR(250) NOT NULL,
+   mobile VARCHAR(12),
+   email VARCHAR(250) UNIQUE NOT NULL,
+   passWord VARCHAR(255),
+   created_at TIMESTAMP DEFAULT NOW(),
+   status BOOLEAN DEFAULT true
 );
 
 -- Drop Table 
@@ -83,12 +84,12 @@ CREATE TABLE IF NOT EXISTS colors(
 DROP TABLE IF EXISTS customers CASCADE;
 
 -- Create Customers Table
-CREATE TABLE customers (
+CREATE TABLE IF NOT EXISTS customers (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(250) NOT NULL,
     mobile VARCHAR(12) UNIQUE NOT NULL,
     email VARCHAR(250) UNIQUE NOT NULL,
-    passWord VARCHAR(255),
+    password VARCHAR(255),
     is_verified BOOLEAN DEFAULT false,
     billing_name VARCHAR(250) NULL,
     billing_email VARCHAR(550) NULL,
@@ -107,7 +108,7 @@ CREATE TABLE customers (
 DROP TABLE IF EXISTS enquiries CASCADE;
 
 -- Create enquiries Table
-CREATE TABLE enquiries (
+CREATE TABLE IF NOT EXISTS enquiries (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(250) NOT NULL,
     mobile VARCHAR(10) NOT NULL,
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS products(
    id BIGSERIAL PRIMARY KEY,
    par_cat_id integer REFERENCES par_categories (id) ON DELETE CASCADE,
    cat_id integer REFERENCES categories (id) ON DELETE CASCADE,
-   child_cat_id integer REFERENCES child_categories (id) ON DELETE CASCADE,
+   child_cat_id integer REFERENCES child_categories (id) ON DELETE CASCADE NULL,
    range_id integer REFERENCES ranges (id) ON DELETE CASCADE,
    color_id integer REFERENCES colors (id) ON DELETE CASCADE,
    name VARCHAR(255) NOT NULL,
@@ -246,6 +247,8 @@ CREATE TABLE IF NOT EXISTS about_us(
    
    why_title VARCHAR(500),
    why_description VARCHAR(10000),
+
+   youtube_video VARCHAR(100),
    
    created_at TIMESTAMP DEFAULT NOW()
 );

@@ -18,6 +18,8 @@ module.exports.createProduct = async (serviceData) => {
       query = await helpers.createInsertQuery("products", serviceData);
     }
 
+    console.log(query);
+
     const responseData = await pool.query(query);
     const createdData = responseData.rows;
     if (createdData.length) {

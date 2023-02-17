@@ -18,7 +18,8 @@ module.exports.createUpdateQuery = async (tableName, condition, body) => {
   query.push(`WHERE ${condition}`);
 
   const colValues = Object.keys(body).map(function (key) {
-    return body[key];
+    if (body[key]) return body[key];
+    else return null;
   });
 
   // Return a complete query string
@@ -36,7 +37,11 @@ module.exports.createInsertQuery = async (tableName, body) => {
     return "$" + (idx + 1);
   });
   let values = Object.keys(body).map(function (k) {
-    return body[k];
+    if (body[k]) {
+      return body[k];
+    } else {
+      return null;
+    }
   });
   return {
     text: insert + "(" + keys + ")" + " values(" + dollar + ") RETURNING *",
