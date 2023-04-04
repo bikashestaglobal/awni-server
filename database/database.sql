@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS categories(
    slug VARCHAR ( 250 ) UNIQUE NOT NULL,
    image VARCHAR ( 1000 ),
    catalogue VARCHAR ( 1000 ),
+   breadcrumb_banner VARCHAR ( 1000 ) DEFAULT NULL,
    created_at TIMESTAMP DEFAULT NOW(),
    status BOOLEAN DEFAULT true
 );
@@ -117,6 +118,22 @@ CREATE TABLE IF NOT EXISTS enquiries (
     status VARCHAR(250) DEFAULT 'PENDING',
     message VARCHAR(2500) NULL,
     product_slug VARCHAR(2500) NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Drop Table 
+DROP TABLE IF EXISTS franchisee CASCADE;
+
+-- Create franchisee Table
+CREATE TABLE IF NOT EXISTS franchisee (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(60) NOT NULL,
+    mobile VARCHAR(10) NOT NULL,
+    email VARCHAR(250) NULL,
+    address VARCHAR(250) NOT NULL,
+    occupation VARCHAR(100) NOT NULL,
+    interested_city VARCHAR(100) NOT NULL,
+    work_profile VARCHAR(100) NOT NULL,
     created_at TIMESTAMP DEFAULT NOW()
 );
 

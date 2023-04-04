@@ -22,6 +22,7 @@ app.use("/api/v1/childCategories", require("./routes/childCategoryRoutes"));
 app.use("/api/v1/ranges", require("./routes/rangesRoutes"));
 app.use("/api/v1/colors", require("./routes/colorRoutes"));
 app.use("/api/v1/enquiries", require("./routes/enquiryRoutes"));
+app.use("/api/v1/franchisee", require("./routes/franchiseeRoutes"));
 app.use("/api/v1/products", require("./routes/productsRoutes"));
 app.use("/api/v1/productImages", require("./routes/productImageRoutes"));
 app.use("/api/v1/productColors", require("./routes/productColorRoutes"));

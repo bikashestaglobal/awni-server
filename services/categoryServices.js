@@ -44,36 +44,36 @@ module.exports.getAllCategories = async ({
   query: searchQuery = "null",
 }) => {
   try {
-    let query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id ORDER BY created_at DESC LIMIT ${parseInt(
+    let query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id ORDER BY created_at DESC LIMIT ${parseInt(
       limit
     )} OFFSET ${parseInt(skip)}`;
 
     if (searchQuery != "null") {
-      query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.name ILIKE '%${searchQuery}%' OR categories.slug ILIKE '%${searchQuery}%' LIMIT ${parseInt(
+      query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.name ILIKE '%${searchQuery}%' OR categories.slug ILIKE '%${searchQuery}%' LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
 
     if (par_cat_id && par_cat_id != undefined && par_cat_id != null) {
-      query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.par_cat_id=${par_cat_id} LIMIT ${parseInt(
+      query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.par_cat_id=${par_cat_id} LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
 
     if (par_cat_slug && par_cat_slug != undefined && par_cat_slug != null) {
-      query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE par_categories.slug=${par_cat_slug} LIMIT ${parseInt(
+      query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE par_categories.slug=${par_cat_slug} LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
 
     if (cat_id && cat_id != undefined && cat_id != null) {
-      query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.cat_id=${cat_id} LIMIT ${parseInt(
+      query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.cat_id=${cat_id} LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
 
     if (cat_slug && cat_slug != undefined && cat_slug != null) {
-      query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.slug=${cat_slug} LIMIT ${parseInt(
+      query = `SELECT categories.id, categories.catalogue, categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, par_categories.slug as par_cat_slug, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.slug=${cat_slug}' LIMIT ${parseInt(
         limit
       )} OFFSET ${parseInt(skip)}`;
     }
@@ -152,7 +152,7 @@ module.exports.getAllCategories = async ({
 module.exports.getCategoryById = async ({ id }) => {
   try {
     // const query = `SELECT * FROM categories WHERE id = ${id}`;
-    const query = `SELECT categories.id, categories.catalogue, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.id = ${id}`;
+    const query = `SELECT categories.id, categories.catalogue,categories.breadcrumb_banner, categories.created_at, categories.status, categories.name, par_categories.id as par_cat_id, par_categories.name as par_cat_name, categories.image, categories.slug FROM categories INNER JOIN par_categories ON par_categories.id = categories.par_cat_id WHERE categories.id = ${id}`;
 
     const responseData = await pool.query(query);
     const fetchedData = responseData.rows;
@@ -177,7 +177,6 @@ module.exports.deleteCategory = async ({ id }) => {
     const responseData = await pool.query(query);
     const deleteddData = responseData.rows;
 
-    
     if (deleteddData.length) {
       return deleteddData[0];
     } else {

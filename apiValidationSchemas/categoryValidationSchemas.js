@@ -5,6 +5,7 @@ module.exports.createCategory = Joi.object({
   slug: Joi.string().trim().required().min(2),
   image: Joi.string().trim(),
   catalogue: Joi.string().trim(),
+  breadcrumb_banner: Joi.string().trim().allow("NULL"),
   par_cat_id: Joi.number().required(),
 });
 
@@ -26,6 +27,7 @@ module.exports.getAllCategories = Joi.object({
   query: Joi.string(),
   par_cat_id: Joi.number(),
   par_cat_slug: Joi.string(),
+  cat_slug: Joi.string(),
 });
 
 module.exports.getCategoryWithProducts = Joi.object({
@@ -38,6 +40,7 @@ module.exports.updateCategory = Joi.object({
   name: Joi.string(),
   slug: Joi.string(),
   catalogue: Joi.string().trim(),
+  breadcrumb_banner: Joi.string().trim(),
   image: Joi.string(),
   par_cat_id: Joi.number(),
 });
