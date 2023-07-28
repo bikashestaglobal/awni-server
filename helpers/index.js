@@ -114,8 +114,8 @@ module.exports.sendOTPEmail = async ({ emailTo, subject, name, otp }) => {
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: "codescroller@gmail.com", // generated ethereal user
-        pass: "uxmdqxciskkgxrcc", // generated ethereal password
+        user: process.env.EMAIL_USER_NAME || "codescroller@gmail.com", // generated ethereal user
+        pass: process.env.EMAIL_PASSWORD, // generated ethereal password
       },
     });
 
