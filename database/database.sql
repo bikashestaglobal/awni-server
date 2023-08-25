@@ -137,6 +137,69 @@ CREATE TABLE IF NOT EXISTS franchisee (
     created_at TIMESTAMP DEFAULT NOW()
 );
 
+-- New Added Tables
+-- Drom Table
+-- DROP TABLE IF EXISTS natures CASCADE;
+CREATE TABLE IF NOT EXISTS natures (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(1000) NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    status BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT false
+);
+
+-- Drom Table
+-- DROP TABLE IF EXISTS surfaces CASCADE;
+CREATE TABLE IF NOT EXISTS surfaces (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(1000) NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    status BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT false
+);
+
+
+-- Drom Table
+-- DROP TABLE IF EXISTS series CASCADE;
+CREATE TABLE IF NOT EXISTS series (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(1000) NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    status BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT false
+);
+
+
+-- Drom Table
+-- DROP TABLE IF EXISTS shapes CASCADE;
+CREATE TABLE IF NOT EXISTS shapes (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(1000) NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    status BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT false
+);
+
+-- Drom Table
+-- DROP TABLE IF EXISTS patterns CASCADE;
+CREATE TABLE IF NOT EXISTS patterns (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description VARCHAR(1000) NULL,
+    created_at TIMESTAMP DEFAULT NOW(),
+    status BOOLEAN DEFAULT true,
+    is_deleted BOOLEAN DEFAULT false
+);
+
 
 -- Drop Table 
 -- DROP TABLE IF EXISTS products CASCADE;
@@ -149,6 +212,25 @@ CREATE TABLE IF NOT EXISTS products(
    child_cat_id integer REFERENCES child_categories (id) ON DELETE CASCADE NULL,
    range_id integer REFERENCES ranges (id) ON DELETE CASCADE,
    color_id integer REFERENCES colors (id) ON DELETE CASCADE,
+
+   nature_id integer REFERENCES natures (id) ON DELETE CASCADE,
+   surface_id integer REFERENCES surfaces (id) ON DELETE CASCADE,
+   series_id integer REFERENCES series (id) ON DELETE CASCADE,
+   shape_id integer REFERENCES shapes (id) ON DELETE CASCADE,
+   pattern_id integer REFERENCES patterns (id) ON DELETE CASCADE,
+   application_area VARCHAR(2000) NULL DEFAULT NULL,
+   brand VARCHAR(100) NULL DEFAULT NULL,
+   concept VARCHAR(100) NULL DEFAULT NULL,
+   origin_country VARCHAR(100) NULL DEFAULT NULL,
+   related_product VARCHAR(100) NULL DEFAULT NULL,
+   pc_per_box INTEGER,
+   covered_area DECIMAL,
+   features VARCHAR(2000) NULL DEFAULT NULL,
+   short_description VARCHAR(1000) NULL,
+   movement VARCHAR(1000) NULL,
+   meta_tite VARCHAR(200) NULL,
+   meta_description VARCHAR(500) NULL,
+
    name VARCHAR(255) NOT NULL,
    slug VARCHAR ( 250 ) UNIQUE NOT NULL,
    mrp INTEGER NOT NULL,
@@ -162,6 +244,28 @@ CREATE TABLE IF NOT EXISTS products(
    status BOOLEAN DEFAULT true,
    created_at TIMESTAMP DEFAULT NOW()
 );
+
+-- NATURE
+-- SURFACE
+-- SERIES
+-- SHAPE
+-- PATTERN
+-- APPLICATION AREA : HTML
+-- BRAND
+-- PRODUCT NAME
+-- CONCEPT
+-- COUNTRY OF ORIGIN
+-- RELATED PRODUCT
+-- COLOUR
+-- PC PER BOX
+-- COVERED AREA PER BOX
+-- PRICE PER BOX
+-- ITEM WEIGHT PER BOX  : Already
+-- IMAGES : Already
+-- FEATURES : HTML
+-- SHORT DESCRIPTION
+-- MOVEMENT
+
 
 
 -- Drop Table 
